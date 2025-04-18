@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { SignUpPage } from '../page-objects/sign-up-object';
 import { getCurrentDateTime } from '../utils';
-import { SignUpLocators } from '../signup-locators';
+import { SignUpLocators } from '../locators';
 
 test('Successful signUp', async ({ page }) => {
   const signUpPage = new SignUpPage(page);

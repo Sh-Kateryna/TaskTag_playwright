@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { SignUpLocators } from '../signup-locators';
+import { SignUpLocators } from '../locators';
 
 export class SignUpPage {
     readonly page: Page;
