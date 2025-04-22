@@ -1,4 +1,4 @@
-export function getCurrentDateTime(format: string = 'YYYYMMddHHmmss'): string {
+export function getCurrentDateTime(format: string = 'YYYYMMddHHmmssSSS'): string {
     const now = new Date();
     
     const map: Record<string, string> = {
@@ -9,8 +9,9 @@ export function getCurrentDateTime(format: string = 'YYYYMMddHHmmss'): string {
       HH: now.getHours().toString().padStart(2, '0'),
       mm: now.getMinutes().toString().padStart(2, '0'),
       ss: now.getSeconds().toString().padStart(2, '0'),
+      SSS: now.getMilliseconds().toString().padStart(3, '0'),
     };
   
-    return format.replace(/YYYY|YY|MM|dd|HH|mm|ss/g, (match) => map[match]);
+    return format.replace(/YYYY|YY|MM|dd|HH|mm|ss|SSS/g, (match) => map[match]);
   }
   
