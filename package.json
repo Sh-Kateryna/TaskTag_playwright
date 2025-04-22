@@ -9,6 +9,7 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "1.52.0",
+    "@testomatio/reporter": "1.6.16",
     "@types/node": "^22.14.1"
   }
 }
