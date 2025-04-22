@@ -44,7 +44,7 @@ test.describe('Log in with email', () => {
 
       await loginPage.goto()
       await loginPage.login(userEmail, userPassword);
-      await expect(page).toHaveURL(/.*\/projects\/.*/);
+      await expect(page).toHaveURL(/projects\/allprojects/);
       await expect(page.getByLabel('New Task')).toBeVisible();
     }
   );
