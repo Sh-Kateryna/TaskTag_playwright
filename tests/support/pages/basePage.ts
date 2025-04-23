@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { chatSection } from '../sections/chatSection';
+import { ChatSection } from '../sections/chatSection';
 
 export class NavigationSection {
   readonly projects: Locator;
@@ -23,20 +23,16 @@ export class NavigationSection {
 export class BasePage {
   readonly page: Page;
   readonly navigationSection: NavigationSection;
-  readonly chatSection: chatSection;
+  readonly chatSection: ChatSection;
   readonly newTaskButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.chatSection = new chatSection(page);
+    this.chatSection = new ChatSection(page);
     this.navigationSection = new NavigationSection(page);
     this.newTaskButton = page.getByLabel('New Task');
   };
 
-  /**
-   * @param email default value is `vscode@example.com`
-   * @param password default value is `P@ssw0rd`
-   */
   async loginAs(email: string='vscode@example.com', password: string='P@ssw0rd') {
     await this.page.goto('/login');
     await this.page.getByLabel('Email').fill(email);

@@ -20,7 +20,7 @@ export default defineConfig({
     ['html', { outputFolder: 'test-results' }], 
     ['./node_modules/@testomatio/reporter/lib/adapter/playwright.js', {
       apiKey: process.env.TESTOMATIO,
-    }] // TESTOMATIO=your_testomatio_token npx playwright test   
+    }]
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

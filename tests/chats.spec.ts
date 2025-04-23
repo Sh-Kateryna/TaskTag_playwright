@@ -1,6 +1,100 @@
 import { test, expect } from '@playwright/test';
 import { BasePage } from './support/pages/basePage';
+import { SignUpPage } from './support/pages/signupPage';
 import { getCurrentDateTime } from './support/utils';
+
+test.describe('New Chat', () => {
+  test('C204 - Search member',
+    async ({ page }) => {
+      const basePage = new BasePage(page);
+      const memberName = 'TaskTag Support';
+      
+      await basePage.loginAs();
+
+      await basePage.chatSection.newChatButton.click();
+      await basePage.chatSection.newChatForm.searchMember(memberName);
+      await expect(basePage.chatSection.newChatForm.contactTitle).toHaveText(memberName);
+    }
+  );
+
+  test("C208 - Create a 'New Group Chat' - without group name",
+    async ({ page }) => {
+      const basePage = new BasePage(page);
+ 
+      await basePage.loginAs('katalon@example.com');
+  
+      await basePage.chatSection.newChatButton.click();
+      await basePage.chatSection.newChatForm.newGroupChatButton.click();
+      await basePage.chatSection.newChatForm.contactTitle.click();
+      await basePage.chatSection.newChatForm.contactTitle.click();
+      await basePage.chatSection.newChatForm.nextButton.click();
+      await basePage.chatSection.newChatForm.createGroupButton.click();
+  
+      await expect(basePage.chatSection.chatHistory).toContainText('has created a group');
+    }
+  );
+});
+
+test.describe('Chat Request', () => {
+  test("C302	Accept user's request",
+    async ({ page }) => {
+      const signupPage = new SignUpPage(page);
+      const basePage = new BasePage(page);
+      const timestamp = getCurrentDateTime('YYMMddHHmmss')
+      const requestUserName = `Awesomeuser ${timestamp}`;
+      const userName = 'vscode staging';
+  
+      await signupPage.goto()
+      await signupPage.signUp(
+        `${timestamp}@example.com`, 
+        'P@ssw0rd', 
+        timestamp, 
+        `+1907${getCurrentDateTime('YYssSSS')}`
+      );
+      await basePage.chatSection.newChatButton.click();
+      await basePage.chatSection.newChatForm.searchMember('vscode staging');
+      await page.waitForTimeout(1000);
+      await basePage.chatSection.sendRequestAdd(userName).click();
+      await page.waitForTimeout(1000);
+      await expect(basePage.chatSection.sendRequestPending(userName)).toBeVisible();
+
+      await basePage.loginAs()
+      await basePage.chatSection.chatItem(`${requestUserName}`).click();
+      await basePage.chatSection.acceptRequestButton.click();
+      await page.waitForTimeout(2000);
+      await expect(basePage.chatSection.messageInput).toBeVisible();
+      await expect(basePage.chatSection.message('Connection request approved')).toBeVisible();
+    }
+  );
+  test("C303	Decline user's request",
+    async ({ page }) => {
+      const signupPage = new SignUpPage(page);
+      const basePage = new BasePage(page);
+      const timestamp = getCurrentDateTime('YYMMddHHmmss')
+      const requestUserName = `Awesomeuser ${timestamp}`;
+      const userName = 'vscode staging';
+  
+      await signupPage.goto()
+      await signupPage.signUp(
+        `${timestamp}@example.com`, 
+        'P@ssw0rd', 
+        timestamp, 
+        `+1907${getCurrentDateTime('YYssSSS')}`
+      );
+      await basePage.chatSection.newChatButton.click();
+      await basePage.chatSection.newChatForm.searchMember('vscode staging');
+      await page.waitForTimeout(1000);
+      await basePage.chatSection.sendRequestAdd(userName).click();
+      await page.waitForTimeout(1000);
+      await expect(basePage.chatSection.sendRequestPending(userName)).toBeVisible();
+
+      await basePage.loginAs()
+      await basePage.chatSection.chatItem(`${requestUserName}`).click();
+      await basePage.chatSection.declineRequestButton.click();
+      await expect(basePage.chatSection.chatItem(`${requestUserName}`)).not.toBeVisible();
+    }
+  );
+});
 
 test.describe('Chat', () => {
   test('C402 - Type and send a short message (<50 char)',
