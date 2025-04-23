@@ -30,6 +30,7 @@ test.describe('Sign up with email', () => {
       await signupPage.goto()
       await signupPage.fillLoginData(userEmail, userPassword);
       await expect(page.getByText('Invalid email address')).toBeVisible();
+      await page.waitForTimeout(1000);
       await expect(page.locator("//*[@aria-label='Create Account'][1]").isDisabled()).toBeTruthy();
     }
   );
