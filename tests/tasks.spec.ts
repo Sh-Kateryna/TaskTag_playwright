@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TasksPage } from './support/pages/tasksPage';
 import { getCurrentDateTime } from './support/utils';
 
-test.describe('Tasks', () => {
+test.describe('Create Task', () => {
   test("T204 - Create Task - long name (max chars - 25)",
     async ({ page }) => {
       const tasksPage = new TasksPage(page);
@@ -18,7 +18,7 @@ test.describe('Tasks', () => {
       await tasksPage.newTaskButton.click();
       await tasksPage.createTaskForm.createTask(taskName);
 
-      await expect(page.locator(`//*//*[@aria-label='current']//*[@aria-label='${taskNameShort}']`)).toBeVisible();
+      await expect(page.locator(`//*[@aria-label='current']//*[@aria-label='${taskNameShort}']`)).toBeVisible();
     }
   );
 });
