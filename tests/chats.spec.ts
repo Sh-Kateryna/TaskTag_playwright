@@ -1,3 +1,4 @@
+import path from 'path';
 import { test, expect } from '@playwright/test';
 import { BasePage } from './support/pages/basePage';
 import { SignUpPage } from './support/pages/signupPage';
@@ -36,7 +37,7 @@ test.describe('New Chat', () => {
 });
 
 test.describe('Chat Request', () => {
-  test("C302	Accept user's request",
+  test("C302 - Accept user's request",
     async ({ page }) => {
       const signupPage = new SignUpPage(page);
       const basePage = new BasePage(page);
@@ -59,14 +60,14 @@ test.describe('Chat Request', () => {
       await expect(basePage.chatSection.sendRequestPending(userName)).toBeVisible();
 
       await basePage.loginAs()
-      await basePage.chatSection.chatItem(`${requestUserName}`).click();
+      await basePage.chatSection.openExistingChat(`${requestUserName}`);
       await basePage.chatSection.acceptRequestButton.click();
       await page.waitForTimeout(2000);
       await expect(basePage.chatSection.messageInput).toBeVisible();
       await expect(basePage.chatSection.message('Connection request approved')).toBeVisible();
     }
   );
-  test("C303	Decline user's request",
+  test("C303 - Decline user's request",
     async ({ page }) => {
       const signupPage = new SignUpPage(page);
       const basePage = new BasePage(page);
@@ -89,7 +90,7 @@ test.describe('Chat Request', () => {
       await expect(basePage.chatSection.sendRequestPending(userName)).toBeVisible();
 
       await basePage.loginAs()
-      await basePage.chatSection.chatItem(`${requestUserName}`).click();
+      await basePage.chatSection.openExistingChat(`${requestUserName}`);
       await basePage.chatSection.declineRequestButton.click();
       await expect(basePage.chatSection.chatItem(`${requestUserName}`)).not.toBeVisible();
     }
@@ -111,3 +112,27 @@ test.describe('Chat', () => {
     }
   );
 });
+
+test.describe('Media & Files', () => {
+  test('C602 - Send file to the chat',
+    async ({ page }) => {
+      const basePage = new BasePage(page);
+      const dir = path.join(__dirname, 'support', 'files');
+      const file = path.join(dir, 'sample.pdf')
+      const fileChooserPromise = page.waitForEvent('filechooser');
+
+      // login and open chat
+      await basePage.loginAs('katalon@example.com');
+      await basePage.chatSection.openExistingChat('User Example');
+      await basePage.chatSection.messageInput.click();
+
+      // file upload
+      await basePage.chatSection.fileUploadButton.click();
+      const fileChooser = await fileChooserPromise;
+      await fileChooser.setFiles(file);
+      await page.waitForTimeout(1000);
+      await basePage.chatSection.sendMessageButton.click();
+      await expect(basePage.chatSection.lastMessage).toContainText('sample.pdf');
+    }
+  );
+})

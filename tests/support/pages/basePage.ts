@@ -24,12 +24,14 @@ export class BasePage {
   readonly page: Page;
   readonly navigationSection: NavigationSection;
   readonly chatSection: ChatSection;
+  readonly progressBar: Locator;
   readonly newTaskButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.chatSection = new ChatSection(page);
     this.navigationSection = new NavigationSection(page);
+    this.progressBar = page.locator("//div[@role='progressbar']");
     this.newTaskButton = page.getByLabel('New Task');
   };
 

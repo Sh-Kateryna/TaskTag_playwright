@@ -27,7 +27,10 @@ export class ChatSection {
   readonly newChatForm: NewChatForm;
   readonly newChatButton: Locator;
   readonly messageInput: Locator;
+  readonly fileUploadButton: Locator;
+  readonly sendMessageButton: Locator;
   readonly chatHistory: Locator;
+  readonly lastMessage: Locator;
   readonly acceptRequestButton: Locator;
   readonly declineRequestButton: Locator;
 
@@ -36,7 +39,10 @@ export class ChatSection {
     this.newChatForm = new NewChatForm(page);
     this.newChatButton = page.getByLabel('New Message');
     this.messageInput = page.getByPlaceholder('Type message here...');
+    this.fileUploadButton = page.getByLabel('Add File');
+    this.sendMessageButton = page.getByLabel('Send Message');
     this.chatHistory = page.getByLabel('Chat History').nth(0);
+    this.lastMessage = page.locator("(//div[@aria-label='Message'])[1]");
     this.acceptRequestButton = page.getByLabel('Accept Friend Request');
     this.declineRequestButton = page.getByLabel('Decline Friend Request');
   };
