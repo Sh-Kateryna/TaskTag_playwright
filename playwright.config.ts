@@ -27,7 +27,7 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
      baseURL: 'https://beta.app.tasktag.com',
      headless: true,
-     viewport: { width: 1920, height: 1080 },
+     viewport: { width: 1600, height: 1200 },
      launchOptions: {
       //  args: ['--start-maximized'],
      },
