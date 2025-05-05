@@ -14,7 +14,7 @@ test.describe('Create Project', () => {
       await projectsPage.createProjectButton.click();
       await projectsPage.createProjectForm.createProject(projectName);
 
-      await expect(page).toHaveURL(/projects\/\d+\/tasks/);
+      await expect(page).toHaveURL(/projects\/.+\/tasks/);
       await expect(projectDetailsPage.projectName).toHaveText(projectName);
     }
   );

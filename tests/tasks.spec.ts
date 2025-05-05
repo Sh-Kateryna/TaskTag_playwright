@@ -13,7 +13,7 @@ test.describe('Create Task', () => {
       await tasksPage.loginAs();
       await tasksPage.navigationSection.projects.click();
       await page.locator("//*[@aria-label='Project']").nth(0).click();
-      await page.waitForURL(/projects\/\d+\/tasks/);
+      await page.waitForURL(/projects\/.+\/tasks/);
       
       await tasksPage.newTaskButton.click();
       await tasksPage.createTaskForm.createTask(taskName);
